@@ -247,7 +247,7 @@ class LaravelGenerator extends AbstractGenerator
      *
      * @return array
      */
-    protected function getRouteRules($route, $bindings)
+    protected function getRouteRules($route, $bindings, $routeMethod = 'GET')
     {
         list($class, $method) = explode('@', $route);
         $reflection = new ReflectionClass($class);
@@ -264,6 +264,7 @@ class LaravelGenerator extends AbstractGenerator
                     // Add route parameter bindings
                     $parameterReflection->query->add($bindings);
                     $parameterReflection->request->add($bindings);
+                    $parameterReflection->setMethod($routeMethod);
 
                     if (method_exists($parameterReflection, 'validator')) {
                         return app()->call([$parameterReflection, 'validator'])
