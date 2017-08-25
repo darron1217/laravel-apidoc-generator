@@ -80,7 +80,7 @@ abstract class AbstractGenerator
     protected function getParameters($routeData, $routeAction, $bindings)
     {
         $routeMethod = is_array($routeData['methods']) ? $routeData['methods'][0] : 'GET';
-        $validator = Validator::make([], $this->getRouteRules($routeAction['uses'], $bindings, $routeMethod));
+        $validator = Validator::make([], $this->getRouteRules($routeAction, $bindings, $routeMethod));
 
         foreach ($validator->getRules() as $attribute => $rules) {
             $attributeData = [
@@ -185,14 +185,14 @@ abstract class AbstractGenerator
     }
 
     /**
-     * @param  $route
+     * @param  $routeAction
      * @param  array $bindings
      *
      * @return array
      */
-    protected function getRouteRules($route, $bindings, $routeMethod = 'GET')
+    protected function getRouteRules($routeAction, $bindings, $routeMethod = 'GET')
     {
-        list($class, $method) = explode('@', $route);
+        list($class, $method) = explode('@', $routeAction['uses']);
         $reflection = new ReflectionClass($class);
         $reflectionMethod = $reflection->getMethod($method);
 
