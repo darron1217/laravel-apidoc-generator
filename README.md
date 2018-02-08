@@ -4,13 +4,10 @@ Automatically generate your API documentation from your existing Laravel routes.
 
 `php artisan api:gen --routePrefix="settings/api/*"`
 
-![image](http://img.shields.io/packagist/v/mpociot/laravel-apidoc-generator.svg?style=flat)
-![image](http://img.shields.io/packagist/l/mpociot/laravel-apidoc-generator.svg?style=flat)
-[![codecov.io](https://codecov.io/github/mpociot/laravel-apidoc-generator/coverage.svg?branch=master)](https://codecov.io/github/mpociot/laravel-apidoc-generator?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpociot/laravel-apidoc-generator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpociot/laravel-apidoc-generator/?branch=master)
-[![Build Status](https://travis-ci.org/mpociot/laravel-apidoc-generator.svg?branch=master)](https://travis-ci.org/mpociot/laravel-apidoc-generator)
-[![StyleCI](https://styleci.io/repos/57999295/shield)](https://styleci.io/repos/57999295)
-[![Dependency Status](https://www.versioneye.com/php/mpociot:laravel-apidoc-generator/dev-master/badge?style=flat)](https://www.versioneye.com/php/mpociot:laravel-apidoc-generator/dev-master)
+![image](http://img.shields.io/packagist/v/darron1217/laravel-apidoc-generator.svg?style=flat)
+![image](http://img.shields.io/packagist/l/darron1217/laravel-apidoc-generator.svg?style=flat)
+[![Build Status](https://travis-ci.org/darron1217/laravel-apidoc-generator.svg?branch=master)](https://travis-ci.org/darron1217/laravel-apidoc-generator)
+[![Dependency Status](https://www.versioneye.com/php/darron1217:laravel-apidoc-generator/dev-master/badge?style=flat)](https://www.versioneye.com/php/darron1217:laravel-apidoc-generator/dev-master)
 
 
 ## Installation
@@ -18,15 +15,13 @@ Automatically generate your API documentation from your existing Laravel routes.
 Require this package with composer using the following command:
 
 ```sh
-$ composer require mpociot/laravel-apidoc-generator
+$ composer require darron1217/laravel-apidoc-generator
 ```
-Go to your `config/app.php` and add the service provider:
+Using Laravel < 5.5? Go to your `config/app.php` and add the service provider:
 
 ```php
 Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
 ```
-
-> Using Laravel < 5.4? Use version 1.0! For Laravel 5.4 and up, use 2.0 instead.
 
 ## Usage
 
@@ -52,7 +47,7 @@ Route::group(array('prefix' => 'api/v1', 'middleware' => []), function () {
 
 Option | Description
 --------- | -------
-`output` | The output path used for the generated documentation. Default: `public/docs`
+`output` | The output path used for the generated documentation. Default: `public/docs`
 `routePrefix` | The route prefix to use for generation - `*` can be used as a wildcard
 `routes` | The route names to use for generation - Required if no routePrefix is provided
 `middleware` | The middlewares to use for generation
@@ -63,7 +58,7 @@ Option | Description
 `router` | The router to use, when processing the route files (can be Laravel or Dingo - defaults to Laravel)
 `bindings` | List of route bindings that should be replaced when trying to retrieve route results. Syntax format: `binding_one,id|binding_two,id`
 `force` | Force the re-generation of existing/modified API routes
-`header` | Custom HTTP headers to add to the example requests. Separate the header name and value with ":". For example: `--header 'Authorization: CustomToken'`
+`header` | Custom HTTP headers to add to the example requests. Separate the header name and value with ":". For example: `--header="Authorization: CustomToken"`
 
 ## Publish rule descriptions for customisation or translation.
 
@@ -107,7 +102,7 @@ class ExampleController extends Controller {
 	 }
 ```
 
-**Result:** 
+**Result:**
 
 ![Doc block result](http://headsquaredsoftware.co.uk/images/api_generator_docblock.png)
 
@@ -184,7 +179,7 @@ public function responseTag()
 
 #### API responses
 
-If your API route accepts a `GET` method, this package tries to call the API route with all middleware disabled to fetch an example API response. 
+If your API route accepts a `GET` method, this package tries to call the API route with all middleware disabled to fetch an example API response.
 
 If your API needs an authenticated user, you can use the `actAsUserId` option to specify a user ID that will be used for making these API calls:
 
@@ -206,7 +201,7 @@ The generator automatically creates a Postman collection file, which you can imp
 
 If you don't want to create a Postman collection, use the `--noPostmanCollection` option, when generating the API documentation.
 
-As of as of Laravel 5.3, the default base URL added to the Postman collection will be that found in your Laravel `config/app.php` file. This will likely be `http://localhost`. If you wish to change this setting you can directly update the url or link this config value to your environment file to make it more flexible (as shown below):
+As of Laravel 5.3, the default base URL added to the Postman collection will be that found in your Laravel `config/app.php` file. This will likely be `http://localhost`. If you wish to change this setting you can directly update the url or link this config value to your environment file to make it more flexible (as shown below):
 
 ```php
 'url' => env('APP_URL', 'http://yourappdefault.app'),
@@ -222,7 +217,7 @@ APP_URL=http://yourapp.app
 
 If you want to modify the content of your generated documentation, go ahead and edit the generated `index.md` file.
 The default location of this file is: `public/docs/source/index.md`.
- 
+
 After editing the markdown file, use the `api:update` command to rebuild your documentation as a static HTML file.
 
 ```sh
