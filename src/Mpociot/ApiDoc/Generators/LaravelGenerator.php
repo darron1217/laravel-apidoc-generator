@@ -244,11 +244,13 @@ class LaravelGenerator extends AbstractGenerator
     /**
      * @param  string $route
      * @param  array $bindings
+     * @param  array $routeData
      *
      * @return array
      */
-    protected function getRouteRules($routeAction, $bindings, $routeMethod = 'GET')
+    protected function getRouteRules($routeAction, $bindings, $routeData)
     {
+        $routeMethod = is_array($routeData['methods']) ? $routeData['methods'][0] : 'GET';
         list($class, $method) = explode('@', $routeAction['uses']);
         $reflection = new ReflectionClass($class);
         $reflectionMethod = $reflection->getMethod($method);
@@ -265,9 +267,15 @@ class LaravelGenerator extends AbstractGenerator
                     $parameterReflection->query->add($bindings);
                     $parameterReflection->request->add($bindings);
                     $parameterReflection->setMethod($routeMethod);
-                    // add route to request (for use of request->route() on validator)
-                    $parameterReflection->setRouteResolver(function() use ($routeMethod, $routeAction) {
-                      return new Route($routeMethod, '', $routeAction);
+                    // set route of request (for use of request->route() on validator)
+                    $parameterReflection->setRouteResolver(function() use ($routeMethod, $routeAction, $routeData) {
+                        $route = new Route($routeMethod, $routeData['uri'], $routeAction);
+                        foreach ($route->parameterNames() as $name) {
+                            // set binded model's id to 1
+                            $route->parameters[$name] = 1;
+                        }
+                        app()->router->substituteImplicitBindings($route);
+                      return $route;
                     });
 
                     if (method_exists($parameterReflection, 'validator')) {
