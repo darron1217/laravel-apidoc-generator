@@ -501,6 +501,8 @@ abstract class AbstractGenerator
         // The format for specifying validation rules and parameters follows an
         // easy {rule}:{parameters} formatting convention. For instance the
         // rule "Max:3" states that the value may only be three letters.
+        if(is_object($rules)) $rules = get_class($rules);
+
         if (strpos($rules, ':') !== false) {
             list($rules, $parameter) = explode(':', $rules, 2);
 
