@@ -86,7 +86,8 @@ abstract class AbstractGenerator
         })->toArray();
         $validator = Validator::make([], $routeRules);
         $routeRules = collect($validator->getRules())->mapWithKeys(function($rule, $key) {
-            $key = str_replace('@', '&#42;', $key);
+            // using another asterisk ∗ to prevent markdown converting ** to <em></em>
+            $key = str_replace('@', '∗', $key);
             return [$key => $rule];
         })->toArray();
         foreach ($routeRules as $attribute => $rules) {
