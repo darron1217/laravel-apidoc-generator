@@ -274,7 +274,9 @@ class LaravelGenerator extends AbstractGenerator
                             // set binded model's id to 1
                             $route->parameters[$name] = 1;
                         }
-                        app()->router->substituteImplicitBindings($route);
+                        if($route->parameters) {
+                            app()->router->substituteImplicitBindings($route);
+                        }
                       return $route;
                     });
 
